@@ -4,16 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+class ItemsAdapter(private val onItemRemoved: (ItemModel) -> Unit) :
+    RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
 
-    private val items = mutableListOf<ItemModel>()
-    class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private var items = listOf<ItemModel>()
+    inner class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView = view.findViewById<TextView>(R.id.textViewItem)
+        val button = view.findViewById<ImageButton>(R.id.imageButton)
 
         fun bind(item: ItemModel) {
             textView.text = item.name
+            button.setOnClickListener {
+                onItemRemoved(item)
+            }
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -27,8 +33,8 @@ class ItemsAdapter : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
         val item = items[position]
         holder.bind(item)
     }
-    fun addItem(newItem: ItemModel) {
-        items.add(newItem)
+    fun updateItems(newItems: List<ItemModel>) {
+        items = newItems
         notifyDataSetChanged()
     }
 }

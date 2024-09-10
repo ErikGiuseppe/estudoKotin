@@ -1,3 +1,10 @@
 package ErikGiuseppe.com.github
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class ItemModel(val name: String)
+@Entity
+data class ItemModel(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val name: String
+)
